@@ -34,7 +34,7 @@ exports.getUsers = async (req, res) => {
   try {
     User.getAll((users) => {
       res.send(users);
-      res.redirect("/users");
+      //res.redirect("/users");
     });
   } catch (err) {
     res.status(500).send("Server Error");
