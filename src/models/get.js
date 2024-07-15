@@ -1,4 +1,6 @@
-const db = require('./db.js');
+const userController = require("../controllers/userController.js");
+//const { x } = require("../controllers/usercontroller.js");
+const db = require("./db.js");
 
 const User = {
   getAll: (callback) => {
@@ -9,23 +11,25 @@ const User = {
     });
   },
 
-  getById: (PersonID, callback) => {
-    const sql = 'SELECT * FROM persons WHERE PersonID = ?';
-    db.query(sql, [PersonID], (err, results) => {
-        if (err) throw err;
-        callback(results[0]);
-    });
-},
-
-create: (user, callback) => {
-  const sql = 'INSERT INTO users SET ?';
-  db.query(sql, user, (err, results) => {
+  getById: (ID, callback) => {
+    const sql = "SELECT * FROM persons WHERE id = ?";
+    db.query(sql, [ID], (err, results) => {
       if (err) throw err;
-      callback(results.PersonID);
-  });
-},
+      callback(results[0]);
+    });
+  },
 
-}
-module.exports = User
+  create: (user, callback) => {
+    const sql = "INSERT INTO persons (name) VALUES ('" + user + "');";
+    db.query(sql, [user], (err, results) => {
+      if (err) {
+        console.error(err);
+        return callback(err, null);
+      }
+      callback(null, results);
+      console.log(results);
+    });
+  }
 
-
+};
+module.exports = User;

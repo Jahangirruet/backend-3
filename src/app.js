@@ -24,7 +24,7 @@ app.use(function (req, res, next) {
 });
 
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+  console.log(`Example app listening at http://localhost:${PORT}/users`);
 });
 
 //
