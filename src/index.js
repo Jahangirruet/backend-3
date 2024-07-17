@@ -93,12 +93,12 @@ app.use(function (req, res, next) {
 // app.set('views', './src/views');
 // Routes
 //app.get('/users', userController.getUsers);
-app.get('/users/new', userController.newUserForm);
+//app.get('/users/new', userController.newUserForm);
 //app.post('/users', userController.createUser);
 //app.get('/users/:id', userController.getUser);
 //app.get('/users/:id/edit', userController.editUserForm);
 //app.put('/users/:id', userController.updateUser);
-app.delete('/users/:id', userController.deleteUser);
+//app.delete('/users/:id', userController.deleteUser);
 
 // Start server
 const PORT = process.env.PORT || 3000;

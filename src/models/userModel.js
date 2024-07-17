@@ -2,7 +2,7 @@ const db = require('./db.js');
 
 class User {
   static async getAll(callback) {
-    const sql = "SELECT * FROM users";
+    const sql = "SELECT * FROM person";
    db.query(sql, (err, results) => {
       if (err) throw err;
      callback(results);
@@ -10,7 +10,7 @@ class User {
   }
   
   static async findById(ID, callback) {
-    const sql = "SELECT * FROM users WHERE id = ?";
+    const sql = "SELECT * FROM person WHERE id = ?";
     db.query(sql, [ID], (err, results) => {
       if (err) throw err;
       if (typeof callback === 'function') {
@@ -23,7 +23,7 @@ class User {
   
 
   static async create(name,callback) {
-    const sql = "INSERT INTO users (name) VALUES (?)";
+    const sql = "INSERT INTO person (name) VALUES (?)";
     db.query(sql, [name], (err, results) => {
       if (err) throw err;
       if (typeof callback === 'function') {
@@ -35,12 +35,12 @@ class User {
   }
 
   static async update(id, name) {
-    await db.execute('UPDATE users SET name = ? WHERE id = ?', [name, id]);
+    await db.execute('UPDATE person SET name = ? WHERE id = ?', [name, id]);
     return id;
   }
 
   static async delete(id) {
-    await db.execute('DELETE FROM users WHERE id = ?', [id]);
+    await db.execute('DELETE FROM person WHERE id = ?', [id]);
   }
 }
 
