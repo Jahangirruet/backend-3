@@ -63,24 +63,41 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const methodOverride = require('method-override');
 const userController = require('./controllers/userController.js');
+const cors = require("cors");
+const dotenv = require("dotenv");
+
 
 const app = express();
 
+
+const userRoute = require('../src/routes/userRoute.js');
+
+
+
 // Middleware
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(methodOverride('_method'));
+app.use(cors());
+dotenv.config();
+app.use('/', userRoute);
+
+app.use(function (req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
 
 // Set view engine
 // app.set('view engine', 'ejs');
 // app.set('views', './src/views');
 // Routes
-app.get('/users', userController.getUsers);
+//app.get('/users', userController.getUsers);
 app.get('/users/new', userController.newUserForm);
-app.post('/users', userController.createUser);
-app.get('/users/:id', userController.getUser);
-app.get('/users/:id/edit', userController.editUserForm);
-app.put('/users/:id', userController.updateUser);
+//app.post('/users', userController.createUser);
+//app.get('/users/:id', userController.getUser);
+//app.get('/users/:id/edit', userController.editUserForm);
+//app.put('/users/:id', userController.updateUser);
 app.delete('/users/:id', userController.deleteUser);
 
 // Start server
