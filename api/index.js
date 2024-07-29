@@ -5,20 +5,20 @@ const { ApolloServer } = require("@apollo/server");
 const { expressMiddleware } = require("@apollo/server/express4");
 const { default: axios } = require("axios");
 
-
 async function startServer() {
   const app = express();
   const port = 3000;
   app.use(cors());
   app.use(bodyParser.json());
-  
 
   const server = new ApolloServer({
     typeDefs: /* GraphQL */ `
       type users {
-        name: String!
+        id: ID!
+        first_name: String
+        last_name: String
+        address: String
       }
-    
 
       type Query {
         getUsers: [users]
@@ -26,7 +26,15 @@ async function startServer() {
       }
 
       type Mutation {
-        createUser(name: String!): users
+        createUser(
+          first_name: String
+          last_name: String
+          address: String
+        ): users,
+
+        UpdateUser(id: ID, first_name: String, last_name: String, address: String): users
+   
+        
       }
     `,
     resolvers: {
@@ -35,18 +43,31 @@ async function startServer() {
           (await axios.get("http://localhost:8080/users")).data,
 
         getUser: async (parent, { id }) =>
-          (await axios.get(`http://localhost:8080/users/${id}`)).data
-    },
+          (await axios.get(`http://localhost:8080/users/${id}`)).data,
+      },
 
       Mutation: {
-        createUser: async (parent, { name}) =>
-          (await axios.post("http://localhost:8080/users", {
-            name
-          })).data
-      }
+        createUser: async (parent, { first_name, last_name, address }) =>
+          (
+            await axios.post("http://localhost:8080/users", {
+              first_name,
+              last_name,
+              address,
+            })
+          ).data,
+
+        UpdateUser: async (parent, { id, first_name, last_name, address }) => {
+          (
+            await axios.put(`http://localhost:8080/users/${id}`, {
+              id,
+              first_name,
+              last_name,
+              address,
+            })
+          ).data;
+        },
+      },
     },
-
-
   });
 
   await server.start();

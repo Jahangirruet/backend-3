@@ -57,10 +57,15 @@ exports.newUserForm = (req, res) => {
 
 exports.createUser = async (req, res) => {
   try {
-    //const { name } = req.body;
-    const user = await User.create(req.body.name, (result) => {
-      res.send("user added");
-    });
+    const { first_name, last_name, address } = req.body;
+    const user = await User.create(
+      req.body.first_name,
+      req.body.last_name,
+      req.body.address,
+      (result) => {
+        res.send("user added");
+      }
+    );
   } catch (err) {
     res.status(500).send("Server Error");
   }
@@ -77,9 +82,9 @@ exports.editUserForm = async (req, res) => {
 
 exports.updateUser = async (req, res) => {
   try {
-    const { name } = req.body;
-    await User.update(req.params.id, name);
-    res.send(name);
+    const { first_name , last_name, address} = req.body;
+    await User.update(req.params.id, first_name, last_name, address);
+    res.send(first_name + " " + last_name + " " + address + " updated successfully");
   } catch (err) {
     res.status(500).send("Server Error");
   }
