@@ -40,7 +40,7 @@ class User {
   }
 
   static async delete(id) {
-    await db.execute('DELETE FROM person WHERE id = ?', [id]);
+    await db.execute('DELETE FROM users WHERE id = ?', [id]);
   }
 }
 

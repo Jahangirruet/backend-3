@@ -32,7 +32,9 @@ async function startServer() {
           address: String
         ): users,
 
-        UpdateUser(id: ID, first_name: String, last_name: String, address: String): users
+        UpdateUser(id: ID, first_name: String, last_name: String, address: String): users,
+
+        deleteUser(id: ID): users
    
         
       }
@@ -66,6 +68,11 @@ async function startServer() {
             })
           ).data;
         },
+
+        deleteUser: async (parent, { id }) =>
+          (await axios.delete(`http://localhost:8080/users/${id}`),{
+            id
+          }).data,
       },
     },
   });
