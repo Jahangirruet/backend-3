@@ -7,20 +7,45 @@ const { default: axios } = require("axios");
 
 async function startServer() {
   const app = express();
-  const port = 3000;
+  const port = 4000;
   app.use(cors());
   app.use(bodyParser.json());
 
   const server = new ApolloServer({
     typeDefs: /* GraphQL */ `
+
+    type servers{
+      id: ID!
+      serverIP: String
+      serverPassword: String
+      ram: Int
+      core: Int
+      disk: Int
+    }
+
+    type clients{
+      id: ID!
+      ipaddress: String
+      username: String
+      password: String
+      email: String
+      ram: Int
+      core: Int
+      disk: Int
+      expirydate: String
+    }
+
+
       type users {
         id: ID!
-        first_name: String
+        first_name: String  
         last_name: String
         address: String
       }
 
       type Query {
+        getClients: [clients]
+        gerServers: [servers]
         getUsers: [users]
         getUser(id: ID!): users
       }
@@ -46,6 +71,11 @@ async function startServer() {
 
         getUser: async (parent, { id }) =>
           (await axios.get(`http://localhost:8080/users/${id}`)).data,
+        gerServers: async () =>
+          (await axios.get("http://localhost:8080/server")).data,
+
+        getClients: async () =>
+          (await axios.get("http://localhost:8080/client")).data,
       },
 
       Mutation: {
